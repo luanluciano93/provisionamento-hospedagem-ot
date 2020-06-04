@@ -45,11 +45,11 @@
 
     - name: Registre o nome / versão do pacote PHP disponível
       set_fact:
-        # e.g.: php7.3-fpm
+        # e.g.: php7.4-fpm
         php_fpm_package_name: "{{ php_version_query.stdout }}"
-        # e.g.: php7.3
+        # e.g.: php7.4
         php_version: "{{ php_version_query.stdout.split('-')[0] }}"
-        # e.g.: 7.3
+        # e.g.: 7.4
         php_version_number: "{{ php_version_query.stdout.split('-')[0][3:] }}"
       tags: always
 
