@@ -1,39 +1,34 @@
-[DOCUMENTATION on wiki](https://github.com/DevelopersPL/otshosting-provisioning/wiki)
+[DOCUMENTAÇÃO no wiki](https://github.com/DevelopersPL/otshosting-provisioning/wiki)
 
-otshosting-provisioning
+Provisionamento de Hospedagem de Otserv
 =======================
-This is an Ansible playbook used to fully provision a Ubuntu machine for OTS Hosting.
+Este é um manual usado para provisionar completamente uma máquina Ubuntu para hospedagem OTS nas seguintes configurações:
+__Ubuntu 18.04__
+__MariaDB e Nginx__
+__TFS 1.3 e ZnoteACC__
 
-__Supported OS: Ubuntu 20.04__
+Um script para executar em uma máquina independente para provisioná-lo. Se o usuário "otsmanager" não existir, ele será criado com a senha: "otsmanager".
 
-Make sure to have universe, multiverse and restricted repositories enabled.
-
-A script to run on a standalone machine to provision it. If user "otsmanager" does not exist, it will be created with password: "otsmanager".
 ```bash
 #!/bin/bash -ex
 apt-get update
 apt install -y -q python-simplejson git-core ansible
-ansible-pull -i localhost, -U https://github.com/DevelopersPL/otshosting-provisioning.git -d /srv/otshosting-provisioning --purge -t default
+ansible-pull -i localhost, -U https://github.com/luanluciano93/otshosting-provisioning.git -d /srv/otshosting-provisioning --purge -t default
 ```
 
-Available tags:
+Tags disponíveis:
+* systemd - ativa o registro em diário persistente (padrão)
+* general - software e integração (padrão)
+* mysql - MariaDB servidor SQL (padrão)
+* php-fpm - Suporte PHP para o site (padrão)
+* nginx - servidor web (padrão)
+* pma - phpMyAdmin para facilitar a administração (padrão)
+* tfs - TFS na última revisão compilado e instalado automaticamente (padrão)
+* znote - ZnoteAAC instalado e configurado automaticamente (padrão)
 
-* systemd - enables persistent journald logging (default)
-* general - software & integration (default)
-* mysql - MariaDB SQL server (default)
-* php-fpm - PHP support for website (default)
-* nginx - web server (default)
-* pma - phpMyAdmin for easy administration (default)
-* tfs - TFS 1.X automatically compiled and installed (default)
-* tfs-old - packages ONLY to compile older versions
-* znote - ZnoteAAC automatically installed & configured (default)
-* myaac - only installation, without configuration
-* wine - wine packages to run exe (engines compiled for Windows)
+## Provisionamento baseado em cloud-init
 
-
-## cloud-init based provisioning
-
-A cloud-init script to provision a cloud instance using this playbook:
+Um script cloud-init para provisionar uma instância do cloud usando este manual:
 ```
 #cloud-config
 users:
