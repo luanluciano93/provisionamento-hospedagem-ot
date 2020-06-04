@@ -25,25 +25,25 @@
         state: restarted
 
   tasks:
-    - name: Fail if not running on Ubuntu
+    - name: Falhar se não estiver sendo executado no Ubuntu
       fail:
-        msg: This playbook only works on Ubuntu systems!
+        msg: Este manual só funciona em sistemas Ubuntu!
       when: ansible_distribution != 'Ubuntu'
       tags: always
 
-    - name: Fail if Ubuntu older than 20.04
+    - name: Falhar se o Ubuntu for anterior a versão 18.04
       fail:
-        msg: This playbook requires Ubuntu >= 20.04
-      when: ansible_distribution_major_version|int < 20
+        msg: Este manual requer o Ubuntu >= 18.04
+      when: ansible_distribution_major_version|int < 18
       tags: always
 
-    - name: Check available PHP package name/version
+    - name: Verifique o nome/versão do pacote PHP disponível
       shell: apt-cache show php-fpm | grep Depends | head | awk '{print $2}'
       register: php_version_query
       changed_when: False
       tags: always
 
-    - name: Register available PHP package name/version
+    - name: Registre o nome / versão do pacote PHP disponível
       set_fact:
         # e.g.: php7.3-fpm
         php_fpm_package_name: "{{ php_version_query.stdout }}"
@@ -88,18 +88,10 @@
         - default
         - tfs
 
-    - include: tasks/tfs-old.yml
-      tags:
-        - tfs-old
-
     - include: tasks/znoteaac.yml
       tags:
         - default
         - znote
-
-    - include: tasks/myaac.yml
-      tags:
-        - myaac
 
     - include: tasks/general-last.yml
       tags:
