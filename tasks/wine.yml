@@ -1,5 +1,5 @@
 ---
-- name: Install wine-development
+- name: Instalar o wine-desenvolvimento
   apt:
     pkg: wine-development
     state: latest
