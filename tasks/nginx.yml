@@ -1,16 +1,16 @@
 ---
-- name: Install nginx
+- name: Instalar nginx
   apt:
     pkg: nginx
     state: latest
 
-- name: Copy nginx configuration for default vhost
+- name: Copie a configuração do nginx para o vhost padrão
   template:
     src: templates/nginx-vhost.conf
     dest: /etc/nginx/sites-available/default
   notify: restart nginx
 
-- name: Start nginx Service
+- name: Iniciar serviço nginx
   service:
     name: nginx
     state: started
