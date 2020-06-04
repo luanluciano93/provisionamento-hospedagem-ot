@@ -1,44 +1,52 @@
 ---
-- name: Install debconf to set preseed info
+- name: Instale o debconf para definir informações pré-configuradas
   apt:
     pkg: debconf-utils
 
-- name: Set preseed info phpmyadmin/dbconfig-install
+- name: Definir informações predefinidas phpmyadmin/dbconfig-install
   debconf:
     name: phpmyadmin
     question: phpmyadmin/dbconfig-install
     value: true
     vtype: boolean
 
-- name: Set preseed info phpmyadmin/app-password-confirm
+- name: Definir informações predefinidas phpmyadmin/app-password-confirm
   debconf:
     name: phpmyadmin
     question: phpmyadmin/app-password-confirm
     value: ''
     vtype: password
 
-- name: Set preseed info phpmyadmin/mysql/admin-pass
+- name: Definir informações predefinidas phpmyadmin/mysql/admin-pass
   debconf:
     name: phpmyadmin
     question: phpmyadmin/mysql/admin-pass
     value: ''
     vtype: password
 
-- name: Set preseed info phpmyadmin/mysql/app-pass
+- name: Definir informações predefinidas phpmyadmin/mysql/app-pass
   debconf:
     name: phpmyadmin
     question: phpmyadmin/mysql/app-pass
     value: ''
     vtype: password
 
-- name: Set preseed info phpmyadmin/reconfigure-webserver
+- name: Definir informações predefinidas phpmyadmin/reconfigure-webserver
   debconf:
     name: phpmyadmin
     question: phpmyadmin/reconfigure-webserver
     value: ''
     vtype: multiselect
 
-- name: Install phpmyadmin
+- name: Instalar phpmyadmin
   apt:
     pkg: phpmyadmin
     state: latest
+
+# https://stackoverflow.com/a/54454108/1447395
+- name: Patch bug no Ubuntu 18.04
+  replace:
+    dest: /usr/share/phpmyadmin/libraries/sql.lib.php
+    regexp: |
+      \|\| \(count\(\$analyzed_sql_results\['select_expr'] == 1\)$
+    replace: "            || ((count($analyzed_sql_results['select_expr']) == 1)\n"
