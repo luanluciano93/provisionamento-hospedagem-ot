@@ -1,5 +1,5 @@
 ---
-- name: Create public_html directory
+- name: Criar diretório public_html
   file:
     path: /home/otsmanager/www/public_html
     owner: otsmanager
