@@ -24,7 +24,7 @@
     - tfs.service
     - tfs-gdb.service
 
-- name: Baixe o TFS mais recente do git
+- name: Baixe o TFS mais recente do github
   git:
     repo: https://github.com/otland/forgottenserver.git
     dest: /home/otsmanager/forgottenserver
@@ -92,7 +92,7 @@
     regexp: "^ip ="
     line: 'ip = "{{ansible_default_ipv4.address}}"'
 
-- name: Criar diretório de construção
+- name: Criar diretório de construção BUILD
   file:
     path: /home/otsmanager/forgottenserver/build
     owner: otsmanager
@@ -102,7 +102,7 @@
   become: true
   become_user: otsmanager
 
-- name: Cmake forgottenserver source
+- name: Cmake código fonte TFS
   command: cmake ..
   args:
     chdir: /home/otsmanager/forgottenserver/build
@@ -110,7 +110,7 @@
   become: true
   become_user: otsmanager
 
-- name: Compilar forgottenserver source
+- name: Compilar código fonte TFS
   command: make -j2
   args:
     chdir: /home/otsmanager/forgottenserver/build
