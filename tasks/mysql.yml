@@ -1,31 +1,36 @@
 ---
-- name: Instale o servidor MySQL e pacotes de backup
+- name: Instalando o servidor MySQL e os pacotes de backup
   apt:
     state: latest
     pkg:
       - mariadb-server
       - python3-mysqldb
       - automysqlbackup
-      - MySQL-python
 
-- name: Altere o conjunto de caracteres do MySQL para evitar o erro 1709 do MySQL
+- name: Instalando o Python MySQL
+  apt:
+    name=python-mysqldb state=installed
+    become: yes
+    become_method: sudo
+
+- name: Alterando o conjunto de caracteres do MySQL para evitar o erro 1709 do MySQL
   template:
     src: templates/60-charset.cnf
     dest: /etc/mysql/mariadb.conf.d/60-charset.cnf
   when: ansible_distribution_major_version|int > 15
   notify: restart mysql
 
-- name: Iniciar serviço Mysql
+- name: Iniciando o serviço Mysql
   service:
     name: mysql
     state: restarted
     enabled: true
 
-- name: Analisar .my.cnf existente
+- name: Analiando o .my.cnf existente
   shell: grep -s pass /home/otsmanager/.my.cnf | sed 's/password=//'
   register: existingpass
 
-- name: Gere uma senha aleatória do otsmanager do MySQL
+- name: Gerando uma senha aleatória do OTSMANAGER do MySQL
   command: openssl rand -base64 18
   register: randompass
   when: not existingpass.stdout
@@ -33,7 +38,7 @@
 - set_fact:
     mysql_otsmanager_pass: "{{ randompass.stdout if randompass is not skipped else existingpass.stdout }}"
 
-- name: Definir senha do MySQL otsmanager (localhost)
+- name: Definindo a senha do MySQL OTSMANAGER (localhost)
   mysql_user:
     name: otsmanager
     password: "{{ mysql_otsmanager_pass }}"
@@ -41,7 +46,7 @@
     priv: "*.*:ALL,GRANT"
     check_implicit_admin: yes
 
-- name: Salve a senha do MySQL otsmanager
+- name: Salvando a senha do MySQL OTSMANAGER
   template:
     src: .my.cnf
     dest: /home/otsmanager/.my.cnf
@@ -49,7 +54,7 @@
     group: otsmanager
     mode: 0600
   
-- name: Definir senha do otsmanager do MySQL (%)
+- name: Definindo senha do OTSMANAGER do MySQL (%)
   mysql_user:
     name: otsmanager
     password: "{{ mysql_otsmanager_pass }}"
@@ -57,11 +62,11 @@
     priv: "*.*:ALL,GRANT"
     check_implicit_admin: yes
 
-- name: Verifique o nome do host
+- name: Verificando o nome do HOST
   command: hostname -f
   register: realhostname
 
-- name: Exclua contas root do MySQL que não queremos
+- name: Excluindo as contas root do MySQL desnecessarias
   mysql_user:
     name: root
     host: "{{item}}"
@@ -73,19 +78,19 @@
     - realhostname.stdout
     - "%"
 
-- name: Garanta que usuários anônimos do MySQL não estejam no banco de dados
+- name: Garantindo que usuários anônimos do MySQL não estejam no banco de dados
   mysql_user:
     name: ""
     host_all: yes
     state: absent
     check_implicit_admin: yes
 
-- name: Excluir banco de dados de teste do MySQL
+- name: Excluindo banco de dados de teste do MySQL
   mysql_db:
     name: test
     state: absent
 
-- name: Permitir que o otsmanager acesse o diretório automysqlbackup
+- name: Permitindo que o OTSMANAGER acesse o diretório automysqlbackup
   file:
     path: /var/lib/automysqlbackup
     state: directory
