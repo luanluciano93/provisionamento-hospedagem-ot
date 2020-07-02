@@ -6,6 +6,7 @@
       - mariadb-server
       - python3-mysqldb
       - automysqlbackup
+      - MySQL-python
 
 - name: Altere o conjunto de caracteres do MySQL para evitar o erro 1709 do MySQL
   template:
