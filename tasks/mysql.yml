@@ -9,7 +9,9 @@
 
 - name: Instalando o Python MySQL
   apt:
-    name=python-mysqldb state=installed
+    state: installed
+    pkg:
+      - python-mysqldb
     become: yes
     become_method: sudo
 
