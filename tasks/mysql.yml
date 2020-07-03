@@ -3,17 +3,9 @@
   apt:
     state: latest
     pkg:
-      - python3-dev
-      - python3-pip
       - mariadb-server
-      - python3-mysqldb
+      - python-mysqldb
       - automysqlbackup
-
-- name: Install Python3 MySQL Packages
-  pip:
-    name: mysqlclient
-    state: present
-  when: ansible_python_interpreter is defined
 
 - name: Alterando o conjunto de caracteres do MySQL para evitar o erro 1709 do MySQL
   template:
