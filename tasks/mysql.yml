@@ -1,19 +1,21 @@
 ---
 - name: Instalando o servidor MySQL e os pacotes de backup
   apt:
+    name: "{{ item }}"
     state: latest
+    update_cache: yes
     pkg:
+      - python3-dev
+      - python3-pip
       - mariadb-server
       - python3-mysqldb
       - automysqlbackup
 
-- name: Instalando o Python MySQL
-  apt:
-    state: installed
-    pkg:
-      - python-mysqldb
-    become: yes
-    become_method: sudo
+- name: Install Python3 MySQL Packages
+  pip:
+    name: mysqlclient
+    state: present
+  when: ansible_python_interpreter is defined
 
 - name: Alterando o conjunto de caracteres do MySQL para evitar o erro 1709 do MySQL
   template:
