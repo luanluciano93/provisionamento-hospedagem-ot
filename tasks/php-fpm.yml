@@ -1,5 +1,5 @@
 ---
-- name: Instalar php-fpm
+- name: Instalando o php-fpm
   apt:
     state: latest
     pkg:
@@ -11,46 +11,46 @@
       - php-mbstring
       - composer
 
-- name: Definir php.ini display_errors
+- name: Definindo php.ini -> display_errors
   lineinfile:
     dest: /etc/php/{{ php_version_number }}/fpm/php.ini
     line: "display_errors = On"
     regexp: "^display_errors ="
   notify: restart php{{ php_version_number }}-fpm
 
-- name: Definir php.ini default_timezone
+- name: Definindo php.ini -> default_timezone
   lineinfile:
     dest: /etc/php/{{ php_version_number }}/fpm/php.ini
     line: "date.timezone = America/Sao_Paulo"
     regexp: "^date.timezone ="
   notify: restart php{{ php_version_number }}-fpm
 
-- name: Definir php.ini upload_max_filesize
+- name: Definindo php.ini -> upload_max_filesize
   lineinfile:
     dest: /etc/php/{{ php_version_number }}/fpm/php.ini
     line: "upload_max_filesize = 64M"
     regexp: "^upload_max_filesize ="
   notify: restart php{{ php_version_number }}-fpm
 
-- name: Definir php.ini post_max_size
+- name: Definindo php.ini -> post_max_size
   lineinfile:
     dest: /etc/php/{{ php_version_number }}/fpm/php.ini
     line: "post_max_size = 64M"
     regexp: "^post_max_size ="
   notify: restart php{{ php_version_number }}-fpm
 
-- name: Copiar configuração do conjunto php{{ php_version_number }}-fpm
+- name: Copiando a configuração do conjunto php{{ php_version_number }}-fpm
   template:
     src: templates/php-fpm-pool.conf
     dest: /etc/php/{{ php_version_number }}/fpm/pool.d/otsmanager.conf
   notify: restart php{{ php_version_number }}-fpm
 
-- name: Criar /etc/systemd/system/php{{ php_version_number }}-fpm.service.d
+- name: Criando /etc/systemd/system/php{{ php_version_number }}-fpm.service.d
   file:
     dest: /etc/systemd/system/php{{ php_version_number }}-fpm.service.d
     state: directory
 
-- name: Copiar a substituição da unidade session-dir.conf para o PHP{{ php_version_number }}-FPM
+- name: Copiando a substituição da unidade session-dir.conf para o PHP{{ php_version_number }}-FPM
   template:
     src: templates/systemd/php-session-dir.conf
     dest: /etc/systemd/system/php{{ php_version_number }}-fpm.service.d/session-dir.conf
@@ -58,7 +58,7 @@
     - reload systemd
     - restart php{{ php_version_number }}-fpm
 
-- name: Iniciar serviço php{{ php_version_number }}-fpm
+- name: Iniciando o serviço php{{ php_version_number }}-fpm
   service:
     name: php{{ php_version_number }}-fpm
     state: started
