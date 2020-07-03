@@ -20,14 +20,14 @@ function transfer() {
     # check arguments
     if [ $# -eq 0 ]; 
     then 
-        echo "No arguments specified. Usage:\necho transfer /tmp/test.md\ncat /tmp/test.md | transfer test.md"
+        echo "Nenhum argumento especificado. Uso:\necho transfer /tmp/test.md\ncat /tmp/test.md | transfer test.md"
         return 1
     fi
 
-    # get temporarily filename, output is written to this file show progress can be showed
+    # obter temporariamente o nome do arquivo, a saída é gravada neste arquivo, mostrando que o progresso pode ser mostrado
     tmpfile=$( mktemp -t transferXXX )
     
-    # upload stdin or file
+    # carregar stdin ou arquivo
     file=$1
 
     if tty -s; 
@@ -36,30 +36,30 @@ function transfer() {
 
         if [ ! -e $file ];
         then
-            echo "File $file doesn't exists."
+            echo "O arquivo $file não existe."
             return 1
         fi
         
         if [ -d $file ];
         then
-            # zip directory and transfer
+            # diretório zip e transfer
             zipfile=$( mktemp -t transferXXX.zip )
             cd $(dirname $file) && zip -r -q - $(basename $file) >> $zipfile
             curl --progress-bar --upload-file "$zipfile" "https://transfer.sh/$basefile.zip" >> $tmpfile
             rm -f $zipfile
         else
-            # transfer file
+            # arquivo transfer
             curl --progress-bar --upload-file "$file" "https://transfer.sh/$basefile" >> $tmpfile
         fi
     else 
-        # transfer pipe
+        # tubo de transfer
         curl --progress-bar --upload-file "-" "https://transfer.sh/$file" >> $tmpfile
     fi
    
-    # cat output link
+    # link de saída do gato
     cat $tmpfile
 
-    # cleanup
+    # limpar
     rm -f $tmpfile
 }
 alias transfer=transfer
@@ -70,30 +70,30 @@ echo "===================   MySQL   ==================="
 echo "    phpMyAdmin: https://$(GetLocalIP)/pma3380"
 echo "    Username: `cat ~/.my.cnf | sed -n -e '2{p;q}' | awk -F'=' '{ print $2 }'`"
 echo "    Password: `cat ~/.my.cnf | sed -n -e '3{p;q}' | awk -F'=' '{ print $2 }'`"
-echo -e '    You can execute \E[32;40mmysql'"\033[1m\033[0m commands without a password."
-echo "    Total size and location of MySQL backups: `du -hs /var/lib/automysqlbackup/`"
-echo "    Put your website files in /home/otsmanager/www/public_html"
+echo -e ' Você pode executar o comando \E[32;40mmysql'"\033[1m\033[0m sem uma senha."
+echo "    Tamanho total e localização dos backups do MySQL: `du -hs /var/lib/automysqlbackup/`"
+echo "    Coloque os arquivos do seu site em /home/otsmanager/www/public_html"
 echo ""
-echo "===================   TFS commands   ===================" 
-echo " If you run TFS with the following commands, it will auto restart."
-echo -e '  Enable auto-start on boot:  \E[32;40msudo systemctl enable tfs'"\033[1m\033[0m"
-echo -e ' Disable auto-start on boot:  \E[32;40msudo systemctl disable tfs'"\033[1m\033[0m"
-echo -e '                  Start TFS:  \E[32;40msudo systemctl start tfs'"\033[1m\033[0m"
-echo -e '                   Stop TFS:  \E[32;40msudo systemctl stop tfs'"\033[1m\033[0m"
-echo -e '                Restart TFS:  \E[32;40msudo systemctl restart tfs'"\033[1m\033[0m"
-echo -e '        Check status of TFS:  \E[32;40msudo systemctl status tfs'"\033[1m\033[0m"
-echo -e '          Show full TFS log:  \E[32;40mjournalctl -u tfs'"\033[1m\033[0m (q to exit)"
-echo -e '         Follow TFS console:  \E[32;40mjournalctl -u tfs -f'"\033[1m\033[0m (CTRL+C to stop)"
+echo "===================   TFS comandos   ===================" 
+echo " Se você executar o TFS com os seguintes comandos, ele será reiniciado automaticamente."
+echo -e '  Ativar inicialização automática na inicialização:  \E[32;40msudo systemctl enable tfs'"\033[1m\033[0m"
+echo -e ' Desativar inicialização automática na inicialização:  \E[32;40msudo systemctl disable tfs'"\033[1m\033[0m"
+echo -e '                  Iniciar TFS:  \E[32;40msudo systemctl start tfs'"\033[1m\033[0m"
+echo -e '                   Parar TFS:  \E[32;40msudo systemctl stop tfs'"\033[1m\033[0m"
+echo -e '                Reiniciar TFS:  \E[32;40msudo systemctl restart tfs'"\033[1m\033[0m"
+echo -e '        Verifique o status do TFS:  \E[32;40msudo systemctl status tfs'"\033[1m\033[0m"
+echo -e '          Mostrar log TFS completo:  \E[32;40mjournalctl -u tfs'"\033[1m\033[0m (q to exit)"
+echo -e '         Siga o console do TFS:  \E[32;40mjournalctl -u tfs -f'"\033[1m\033[0m (CTRL+C to stop)"
 echo ""
-echo "===================  Useful commands   ==================="
-echo -e 'Update TFS to latest master:  \E[32;40mupdatetfs'"\033[1m\033[0m"
-echo -e '      Show service due date:  \E[32;40mduedate'"\033[1m\033[0m"
-echo -e '             Show server IP:  \E[32;40mserverip'"\033[1m\033[0m"
-echo -e '               Share a file:  \E[32;40mtransfer path/to/file'"\033[1m\033[0m"
+echo "===================  Comandos úteis   ==================="
+echo -e 'Atualize o TFS para o repositório mais recente:  \E[32;40mupdatetfs'"\033[1m\033[0m"
+echo -e '      Mostrar data de vencimento do serviço:  \E[32;40mduedate'"\033[1m\033[0m"
+echo -e '             Mostrar IP do servidor:  \E[32;40mserverip'"\033[1m\033[0m"
+echo -e '        Compartilhe um arquivo:  \E[32;40mtransfer path/to/file'"\033[1m\033[0m"
 
 echo ""
 if [ "not found" != "$expires" ]; then
-    echo -e "\e[0;33mYour service expires on $(date -d $expires)\033[1m\033[0m"
+    echo -e "\e[0;33mSeu serviço expira em $(date -d $expires)\033[1m\033[0m"
 fi
-echo -n "Current TFS status: "
+echo -n "Status atual do TFS: "
 status tfs
