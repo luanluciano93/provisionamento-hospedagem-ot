@@ -1,9 +1,7 @@
 ---
 - name: Instalando o servidor MySQL e os pacotes de backup
   apt:
-    name: "{{ item }}"
     state: latest
-    update_cache: yes
     pkg:
       - python3-dev
       - python3-pip
