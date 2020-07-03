@@ -1,42 +1,42 @@
 ---
-- name: Copiar ZnoteAAC do Github
+- name: Baixando ZnoteAAC do Github
   git:
     repo: https://github.com/Znote/ZnoteAAC.git
     dest: /home/otsmanager/www/public_html
   become: true
   become_user: otsmanager
 
-- name: Configurar nome de usuário SQL
+- name: Configurando o nome de usuário SQL
   lineinfile:
     dest: /home/otsmanager/www/public_html/config.php
     regexp: \$config\['sqlUser'\]
     line: "        $config['sqlUser'] = 'forgottenserver';"
 
-- name: Configurar senha SQL
+- name: Configurando a senha SQL
   lineinfile:
     dest: /home/otsmanager/www/public_html/config.php
     regexp: \$config\['sqlPassword'\]
     line: "        $config['sqlPassword'] = '{{mysql_forgottenserver_pass}}';"
 
-- name: Configurar banco de dados SQL
+- name: Configurando o banco de dados SQL
   lineinfile:
     dest: /home/otsmanager/www/public_html/config.php
     regexp: \$config\['sqlDatabase'\]
     line: "        $config['sqlDatabase'] = 'forgottenserver';"
 
-- name: Configurar host SQL
+- name: Configurando o host SQL
   lineinfile:
     dest: /home/otsmanager/www/public_html/config.php
     regexp: \$config\['sqlHost'\]
     line: "        $config['sqlHost'] = 'localhost';"
 
-- name: Configurar caminho do servidor
+- name: Configurando o caminho do servidor
   lineinfile:
     dest: /home/otsmanager/www/public_html/config.php
     regexp: \$config\['server_path'\]
     line: "        $config['server_path'] = '/home/otsmanager/forgottenserver';"
 
-- name: Importar esquema do banco de dados do ZnoteAAC
+- name: Importando o esquema do banco de dados do ZnoteAAC
   mysql_db:
     name: forgottenserver
     state: import
