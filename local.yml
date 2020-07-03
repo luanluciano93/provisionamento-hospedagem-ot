@@ -37,19 +37,19 @@
       when: ansible_distribution_major_version|int < 18
       tags: always
 
-    - name: Verifique o nome/versão do pacote PHP disponível
+    - name: Verificando o nome/versão do pacote PHP disponível
       shell: apt-cache show php-fpm | grep Depends | head | awk '{print $2}'
       register: php_version_query
       changed_when: False
       tags: always
 
-    - name: Registre o nome / versão do pacote PHP disponível
+    - name: Registrando o nome/versão do pacote PHP disponível
       set_fact:
-        # e.g.: php7.4-fpm
+        # e.g.: php7.2-fpm
         php_fpm_package_name: "{{ php_version_query.stdout }}"
-        # e.g.: php7.4
+        # e.g.: php7.2
         php_version: "{{ php_version_query.stdout.split('-')[0] }}"
-        # e.g.: 7.4
+        # e.g.: 7.2
         php_version_number: "{{ php_version_query.stdout.split('-')[0][3:] }}"
       tags: always
 
