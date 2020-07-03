@@ -1,16 +1,16 @@
 ---
-- name: Instale o debconf para definir informações pré-configuradas
+- name: Instalando o debconf para definir informações pré-configuradas
   apt:
     pkg: debconf-utils
 
-- name: Definir informações predefinidas phpmyadmin/dbconfig-install
+- name: Definindo as informações predefinidas phpmyadmin/dbconfig-install
   debconf:
     name: phpmyadmin
     question: phpmyadmin/dbconfig-install
     value: true
     vtype: boolean
 
-- name: Definir informações predefinidas phpmyadmin/app-password-confirm
+- name: Definindo as informações predefinidas phpmyadmin/app-password-confirm
   debconf:
     name: phpmyadmin
     question: phpmyadmin/app-password-confirm
@@ -24,21 +24,21 @@
     value: ''
     vtype: password
 
-- name: Definir informações predefinidas phpmyadmin/mysql/app-pass
+- name: Definindo as informações predefinidas phpmyadmin/mysql/app-pass
   debconf:
     name: phpmyadmin
     question: phpmyadmin/mysql/app-pass
     value: ''
     vtype: password
 
-- name: Definir informações predefinidas phpmyadmin/reconfigure-webserver
+- name: Definindo as informações predefinidas phpmyadmin/reconfigure-webserver
   debconf:
     name: phpmyadmin
     question: phpmyadmin/reconfigure-webserver
     value: ''
     vtype: multiselect
 
-- name: Instalar phpmyadmin
+- name: Instalando o phpmyadmin
   apt:
     pkg: phpmyadmin
     state: latest
