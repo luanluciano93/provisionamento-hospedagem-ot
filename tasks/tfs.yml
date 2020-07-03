@@ -1,5 +1,5 @@
 ---
-- name: Instale os pacotes necessários para compilar o TFS
+- name: Instalando os pacotes necessários para compilar o TFS
   apt:
     state: latest
     pkg:
@@ -16,7 +16,7 @@
       - libluajit-5.1-dev
       - libpugixml-dev
 
-- name: Instale o serviço systemd para TFS
+- name: Instalando o serviço systemd para TFS
   template:
     src: templates/{{item}}
     dest: /etc/systemd/system/{{item}}
@@ -24,18 +24,18 @@
     - tfs.service
     - tfs-gdb.service
 
-- name: Baixe o TFS mais recente do github
+- name: Baixando o TFS mais recente do github
   git:
     repo: https://github.com/otland/forgottenserver.git
     dest: /home/otsmanager/forgottenserver
   become: true
   become_user: otsmanager
 
-- name: Analisar config.lua existente
+- name: Analisando o config.lua existente
   shell: grep -s mysqlPass /home/otsmanager/forgottenserver/config.lua | sed -E 's/mysqlPass = "(.*)"/\1/g'
   register: existingpass
 
-- name: Gere uma senha aleatória do servidor de autenticação MySQL
+- name: Gerando uma senha aleatória do servidor de autenticação MySQL
   command: openssl rand -base64 18
   register: randompass
   when: not existingpass.stdout
@@ -43,24 +43,24 @@
 - set_fact:
     mysql_forgottenserver_pass: "{{ randompass.stdout if randompass is not skipped else existingpass.stdout }}"
 
-- name: Criar usuário de banco de dados para TFS
+- name: Criando um usuário de banco de dados para TFS
   mysql_user:
     name: forgottenserver
     password: "{{mysql_forgottenserver_pass}}"
     priv: forgottenserver.*:ALL
     check_implicit_admin: yes
 
-- name: Criar banco de dados para TFS
+- name: Criando um banco de dados para TFS
   mysql_db:
     name: forgottenserver
 
-- name: Importar banco de dados para TFS
+- name: Importando um banco de dados para TFS
   mysql_db:
     name: forgottenserver
     state: import
     target: /home/otsmanager/forgottenserver/schema.sql
 
-- name: Copie config.lua.dist para config.lua se necessário
+- name: Copiando config.lua.dist para config.lua se necessário
   copy:
     dest: /home/otsmanager/forgottenserver/config.lua
     src: /home/otsmanager/forgottenserver/config.lua.dist
@@ -68,31 +68,31 @@
     owner: otsmanager
     group: otsmanager
 
-- name: Coloque mysqlHost para banco de dados em config.lua
+- name: Colocando o mysqlHost do banco de dados em config.lua
   lineinfile:
     dest: /home/otsmanager/forgottenserver/config.lua
     regexp: ^mysqlHost
     line: 'mysqlHost = "localhost"'
 
-- name: Coloque mysqlSock para banco de dados em config.lua
+- name: Coloquando o mysqlSock do banco de dados em config.lua
   lineinfile:
     dest: /home/otsmanager/forgottenserver/config.lua
     regexp: ^mysqlSock
     line: 'mysqlSock = "/var/run/mysqld/mysqld.sock"'
 
-- name: Coloque a senha do banco de dados em config.lua
+- name: Colocando a senha do banco de dados em config.lua
   lineinfile:
     dest: /home/otsmanager/forgottenserver/config.lua
     regexp: ^mysqlPass
     line: 'mysqlPass = "{{mysql_forgottenserver_pass}}"'
 
-- name: Coloque o endereço IP do servidor em config.lua
+- name: Colocando o endereço IP do servidor em config.lua
   lineinfile:
     dest: /home/otsmanager/forgottenserver/config.lua
     regexp: "^ip ="
     line: 'ip = "{{ansible_default_ipv4.address}}"'
 
-- name: Criar diretório de construção BUILD
+- name: Criando um diretório de construção BUILD
   file:
     path: /home/otsmanager/forgottenserver/build
     owner: otsmanager
@@ -102,7 +102,7 @@
   become: true
   become_user: otsmanager
 
-- name: Cmake código fonte TFS
+- name: Cmake do código fonte do TFS
   command: cmake ..
   args:
     chdir: /home/otsmanager/forgottenserver/build
@@ -110,7 +110,7 @@
   become: true
   become_user: otsmanager
 
-- name: Compilar código fonte TFS
+- name: Compilando código fonte do TFS
   command: make -j2
   args:
     chdir: /home/otsmanager/forgottenserver/build
