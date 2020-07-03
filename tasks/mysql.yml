@@ -20,7 +20,7 @@
     state: restarted
     enabled: true
 
-- name: Analiando o .my.cnf existente
+- name: Analisando o .my.cnf existente
   shell: grep -s pass /home/otsmanager/.my.cnf | sed 's/password=//'
   register: existingpass
 
