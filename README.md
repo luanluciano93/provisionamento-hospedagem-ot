@@ -14,7 +14,7 @@ Um script para executar em uma máquina independente para provisioná-lo. Se o u
 #!/bin/bash -ex
 apt-get update
 apt-get install -y -q python-simplejson git-core ansible
-ansible-pull -i localhost, -U https://github.com/luanluciano93/otshosting-provisioning.git -d /srv/otshosting-provisioning --purge -t default
+ansible-pull -i localhost, -U https://github.com/luanluciano93/provisionamento-hospedagem-ot1804 -d /srv/provisionamento-hospedagem-ot1804 --purge -t default
 ```
 
 ### Tags disponíveis:
