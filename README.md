@@ -3,7 +3,9 @@ Este é um manual é usado para provisionar completamente uma máquina Ubuntu pa
 
 ### Configurações:
 - Ubuntu 18.04
-- MariaDB e Nginx
+- PHP 7.2
+- Nginx
+- MariaDB
 - TFS 1.3 e ZnoteACC
 
 
