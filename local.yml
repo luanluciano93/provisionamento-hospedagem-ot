@@ -97,6 +97,3 @@
       tags:
         - default
         - general
-
-    - include: tasks/wine.yml
-      tags: wine
