@@ -4,7 +4,7 @@
     state: latest
     pkg:
       - mariadb-server
-      - python-mysqldb
+      - python3-mysqldb
       - automysqlbackup
 
 - name: Alterando o conjunto de caracteres do MySQL para evitar o erro 1709 do MySQL
