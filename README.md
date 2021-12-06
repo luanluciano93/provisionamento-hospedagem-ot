@@ -2,12 +2,11 @@
 Este é um manual é usado para provisionar completamente uma máquina Ubuntu para hospedagem OTS.
 
 ### Configurações:
-- Ubuntu 18.04
-- PHP 7.2
+- Ubuntu 20.04
+- PHP 7.3
 - Nginx
 - MariaDB
-- TFS 1.3 e ZnoteACC
-
+- TFS 1.4 e ZnoteACC
 
 ### Executando o comando:
 Um script para executar em uma máquina independente para provisioná-lo. Se o usuário "otsmanager" não existir, ele será criado com a senha: "otsmanager".
@@ -15,8 +14,8 @@ Um script para executar em uma máquina independente para provisioná-lo. Se o u
 ```bash
 #!/bin/bash -ex
 apt-get update
-apt-get install -y -q python-simplejson git-core ansible
-ansible-pull -i localhost, -U https://github.com/luanluciano93/provisionamento-hospedagem-ot-1804 -d /srv/provisionamento-hospedagem-ot-1804 --purge -t default
+apt install -y -q python-simplejson git-core ansible
+ansible-pull -i localhost, -U https://github.com/luanluciano93/provisionamento-hospedagem-ot.git -d /srv/provisionamento-hospedagem-ot --purge -t default
 ```
 
 ### Tags disponíveis:
