@@ -14,9 +14,9 @@
         name: nginx
         state: restarted
 
-    - name: restart php7.2-fpm
+    - name: restart php7.4-fpm
       service:
-        name: php7.2-fpm
+        name: php7.4-fpm
         state: restarted
 
     - name: restart mysql
@@ -31,10 +31,10 @@
       when: ansible_distribution != 'Ubuntu'
       tags: always
 
-    - name: Falhar se o Ubuntu for anterior a versão 18.04
+    - name: Falhar se o Ubuntu for anterior a versão 20.04
       fail:
-        msg: Este manual requer o Ubuntu >= 18.04
-      when: ansible_distribution_major_version|int < 18
+        msg: Este manual requer o Ubuntu >= 20.04
+      when: ansible_distribution_major_version|int < 20
       tags: always
 
     - name: Verificando o nome/versão do pacote PHP disponível
@@ -45,11 +45,11 @@
 
     - name: Registrando o nome/versão do pacote PHP disponível
       set_fact:
-        # e.g.: php7.2-fpm
+        # e.g.: php7.3-fpm
         php_fpm_package_name: "{{ php_version_query.stdout }}"
-        # e.g.: php7.2
+        # e.g.: php7.3
         php_version: "{{ php_version_query.stdout.split('-')[0] }}"
-        # e.g.: 7.2
+        # e.g.: 7.3
         php_version_number: "{{ php_version_query.stdout.split('-')[0][3:] }}"
       tags: always
 
