@@ -4,6 +4,11 @@
     pkg: nginx
     state: latest
 
+- name: Criando /etc/nginx/default.d
+  file:
+    dest: /etc/nginx/default.d
+    state: directory
+
 - name: Copiando a configuração do nginx para o vhost padrão
   template:
     src: templates/nginx-vhost.conf
