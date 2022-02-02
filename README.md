@@ -3,10 +3,10 @@ Este é um manual é usado para provisionar completamente uma máquina Ubuntu pa
 
 ### Configurações:
 - Ubuntu 20.04
-- PHP 7.3
+- PHP 7.4
 - Nginx
 - MariaDB
-- TFS 1.4 e ZnoteACC
+- TFS 1.5 e ZnoteACC
 
 ### Executando o comando:
 Um script para executar em uma máquina independente para provisioná-lo. Se o usuário "otsmanager" não existir, ele será criado com a senha: "otsmanager".
